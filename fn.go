@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-
+	"fmt"
 	"github.com/crossplane/crossplane-runtime/pkg/errors"
 	"github.com/crossplane/crossplane-runtime/pkg/logging"
 	fnv1beta1 "github.com/crossplane/function-sdk-go/proto/v1beta1"
@@ -21,6 +21,11 @@ type Function struct {
 // RunFunction runs the Function.
 func (f *Function) RunFunction(_ context.Context, req *fnv1beta1.RunFunctionRequest) (*fnv1beta1.RunFunctionResponse, error) {
 	f.log.Info("Running function", "tag", req.GetMeta().GetTag())
+
+	// Get and print secrets
+	for name, credential := range req.GetCredentials() {
+		fmt.Printf("Name: %s, Value: %s\n", name, string(credential.GetCredentialData().Data["credentials"]))
+	}
 
 	rsp := response.To(req, response.DefaultTTL)
 

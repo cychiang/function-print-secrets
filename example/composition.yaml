@@ -8,10 +8,17 @@ spec:
     kind: XR
   mode: Pipeline
   pipeline:
-  - step: run-the-template
-    functionRef:
-      name: function-template-go
-    input:
-      apiVersion: template.fn.crossplane.io/v1beta1
-      kind: Input
-      example: "Hello world"
+    - step: run-the-template
+      functionRef:
+        name: function-template-go
+      credentials:
+        - name: default
+          source: Secret
+          secretRef:
+            namespace: default
+            name: default
+        - name: n1
+          source: Secret
+          secretRef:
+            namespace: n1
+            name: n1
